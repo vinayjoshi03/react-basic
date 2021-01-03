@@ -16,7 +16,6 @@ class ErrorBoundaryComponent extends React.Component {
   
   render() {
     if (this.state.errorInfo) {
-        console.log(this.state.error);
       return (
         <div>
         <Alert variant="danger">

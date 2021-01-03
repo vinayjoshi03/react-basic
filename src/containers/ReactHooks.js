@@ -2,7 +2,6 @@ import React,{useState, useContext, useEffect} from 'react'
 
 function ReactHooks(props){
     
-//    console.log(state.name);
     //const theme = useContext(ThemeContext);
 
     useEffect(() => {

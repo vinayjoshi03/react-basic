@@ -55,7 +55,6 @@ class AddPost extends Component {
     async handleSubmit(event) {
         let errors = {};
         event.preventDefault();
-        console.log(this.state.postValues);
         Object.keys(this.state.postValues).map((key, index)=>{
             let error = this.validate(key, this.state.postValues[key], this.state.errorMessage);
             if(typeof error[key] !== 'undefined') {

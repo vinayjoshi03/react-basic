@@ -25,7 +25,6 @@ class UserLogin extends Component {
     }
 
     render() {
-        console.log("component----->");
         let userNameError = '';
         let passwordError = '';
         if(Object.keys(this.state.errorMessages).length>0) {

@@ -14,7 +14,7 @@ class PostContainer extends Component{
         await Axios.post('http://localhost:1337/api/posts/create',data).then(response=>{
             this.setState({postResponse:response});
         }).catch(function(err){
-            console.log(err);
+            console.error(err);
         });
         return this.state.postResponse;
     }
