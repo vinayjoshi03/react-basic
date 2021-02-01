@@ -10,6 +10,8 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import Axios from 'axios';
 import { connect } from 'react-redux'
 import UserLogin from './containers/User/UserLogin'
+import ReactHooks from './containers/ReactHooks'
+import TestComponent from './containers/test'
 import ErrorBoundry from './components/UI/ErrorBoundry/ErrorBoundaryComponent'
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 
@@ -42,6 +44,12 @@ class App extends Component {
               </Route>
               <Route path="/login">
                 <ErrorBoundry><UserLogin /></ErrorBoundry>
+              </Route>
+              <Route path="/hooks">
+                <ErrorBoundry><ReactHooks /> </ErrorBoundry>
+              </Route>
+              <Route path="/testcode">
+                <ErrorBoundry><TestComponent /> </ErrorBoundry>
               </Route>
             </Switch>
             <Row><Col className="bg-light">Footer</Col></Row>

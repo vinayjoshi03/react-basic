@@ -6,7 +6,9 @@ import {connect} from 'react-redux'
 class UserLogin extends Component {
     state = {
         inputData: {username: "",password: ""},
-        errorMessages:{}
+        errorMessages:{},
+        inputChange:{value1:0,value2:0},
+        total:null
     }
     handleChange (event) {
         let data=this.state.inputData;
@@ -24,6 +26,14 @@ class UserLogin extends Component {
         this.setState({errorMessages:response});
     }
 
+    handleTextChange = (event)=>{
+        let data=this.state.inputChange;
+        data[event.target.name]=event.target.value;
+        this.setState({inputChange:data});
+        let total = parseInt(this.state.inputChange.value1)+parseInt(this.state.inputChange.value2);
+        this.setState({total:total})
+    }
+
     render() {
         let userNameError = '';
         let passwordError = '';
@@ -35,6 +45,19 @@ class UserLogin extends Component {
                 passwordError = this.state.errorMessages.password;
             }
         }
+        let testFilterWithObj = [{
+            username: "vinay",
+            id:20,
+            amount:50
+        },{
+            username: "rahul",
+            id:20,
+            amount:200
+        }];
+        let filterTest = testFilterWithObj.filter(values=>{
+            if(values.amount>50) return values;
+        });
+        console.log("FilterData==>", filterTest);
         return (
             <div>
                 <Form method="POST" onSubmit={this.handleSubmit.bind(this)}>
@@ -53,6 +76,14 @@ class UserLogin extends Component {
                     </Form.Group>
                     <input variant="outline-success" className={'btn btn-success'} type="submit" value="Submit" />
                 </Form>
+
+                <div>
+                    Value1: <input type="text" name="value1" onChange={this.handleTextChange.bind(this)} />
+                    Value2: <input type="text" name="value2" onChange={this.handleTextChange.bind(this)} />
+
+                    <div>Pasted here== {this.state.total} </div>
+
+                </div>
             </div>
         )
     }

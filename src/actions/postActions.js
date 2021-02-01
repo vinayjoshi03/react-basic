@@ -10,12 +10,12 @@ export const showError = (message = '') => {
     return { type: actionTypes.SHOW_ERROR, payload: { message: message } }
 }
 
-export const fetchPosts = () => {
+export const fetchPosts = (pageNo=0) => {
     return async (dispatch) => {
         dispatch(showLoading(true));
-        await Axios.get('http://localhost:1337/api/posts/getall').then(response => {
+        await Axios.post('http://localhost:1337/api/posts/getall', {pageNumber:pageNo}).then(response => {
             if (response.status === 200) {
-                dispatch({ type: actionTypes.VIEW_ALL, payload: response.data.data, totalPostsCount: response.data.totalPostCount });
+                dispatch({ type: actionTypes.VIEW_ALL, payload: {posts:response.data.data, totalPostCount:response.data.totalPostCount }});
                 dispatch(showLoading(false));
             } else {
                 dispatch(showLoading(false));
@@ -28,14 +28,17 @@ export const fetchPosts = () => {
     }
 }
 
-export const addNewPost = (data) => {
+export const addNewPost = (data, additionalData={pageNumber:0}) => {
     return (dispatch) => {
         dispatch(showLoading(true));
-        return Axios.post('http://localhost:1337/api/posts/create', data).then(response => {
+        return Axios.post('http://localhost:1337/api/posts/create', {postData:data,additionalData:additionalData}).then(response => {
             if (response.status === 200) {
-                dispatch({ type: actionTypes.SHOW_ADD_SUCCESS, payload: { status: true } })
+                console.log("After Create-->",response);
+                dispatch({ type: actionTypes.SHOW_ADD_SUCCESS, payload: { status: true } });
+                dispatch({ type: actionTypes.CREATE_POST, payload: { data: response.data.data } });
                 dispatch(showLoading(false));
                 dispatch(showError(""));
+                dispatch({ type: actionTypes.SHOW_ADD_SUCCESS, payload: { status: false } });
                 //return  Promise.resolve('Post added successfully')
             } else {
                 dispatch(showLoading(false));

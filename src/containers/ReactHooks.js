@@ -7,9 +7,27 @@ function ReactHooks(props){
     useEffect(() => {
         // Update the document title using the browser API
         document.title = `You clicked ${data} times`;
-      });
+        console.log("componentDidMount==>");
+    });
+
+    
+
+    
 
     const [data, setData] = useState('Mount');
+    useEffect(() => {
+        // Update the document title using the browser API
+        document.title = `Data is updated`;
+        //console.log("Mount cal==>");
+        console.log("componentDidUpdate==>");
+    },[data]);
+
+    useEffect(() => {
+        // Update the document title using the browser API
+        document.title = `Unmount happen`;
+        console.log("componentWillUnmount==>");
+        return;
+    },[]);
     const updatedData = () => {
         setData("Update")
     }

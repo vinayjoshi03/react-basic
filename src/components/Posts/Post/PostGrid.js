@@ -1,23 +1,30 @@
 import React, { Component } from 'react'
 import { Table, Button } from 'react-bootstrap';
+import ReactPaginate from 'react-paginate';
 import Axios from 'axios';
 import ModelComponent from '../../UI/ModalComponent/ModalComponent'
+import Pagination from '../../pagination/PaginationComponent'
 import AddPost from '../Post/AddPost'
 import { fetchPosts, getPostDetailsByPost, deletePost } from './../../../actions/postActions'
 import { connect } from 'react-redux'
 
 class PostGrid extends Component {
 
+    constructor(props) {
+    super(props);
+    this.state = {
 
-    state = {
         loadedPost: null,
         showModel: false,
         selectedPostBody: null,
         postTitle: "Post Details",
         selectedDeletePost: {},
         allPosts: {},
-        postHtml: null
+        postHtml: null,
+        totalPostsCount: 0,
+        currentPage: 0
     };
+    }   
 
 
 
@@ -40,6 +47,10 @@ class PostGrid extends Component {
 
     }
 
+    componentDidMount() {
+        //console.log("componentDidMount props--->", props);
+        //this.setState({totalPostCount: this.props.totalPostCount});
+    }
     handleDelete(postid) {
         this.props.handleDeletePost(postid);
     }
@@ -47,10 +58,12 @@ class PostGrid extends Component {
         this.setState({ selectedPostBody: <div><AddPost /></div>, showModel: true });
     }
 
-
+    
 
     render() {
+        let totalPages = Math.ceil(this.props.totalPostsCount / 5);
         let PostDataList = this.props.allPosts.map((post, key) => {
+
             return (
                 <tr key={post.id + "id"}>
                     <td>{post.title}</td>
@@ -68,6 +81,7 @@ class PostGrid extends Component {
                 </tr>
             );
         });
+        this.totalPostsCount = this.props.totalPostsCount;
         return (
             <div>
                 <div onClick={() => this.createNewPost()}>Create New Post</div>
@@ -83,6 +97,8 @@ class PostGrid extends Component {
                         {PostDataList}
                     </tbody>
                 </Table>
+
+                <ReactPaginate onPageChange={this.props.getPagePost} containerClassName="paginationContainer" pageCount={totalPages} pageRangeDisplayed={2} marginPagesDisplayed="2"></ReactPaginate>
                 <ModelComponent title={this.state.postTitle} modelBody={this.state.selectedPostBody} handleClose={this.handleModelClose.bind(this)} show={this.state.showModel} />
             </div>
         );
@@ -94,7 +110,8 @@ const mapStatesToProps = (state) => {
         postData: state.post.posts,
         isPostAdded: state.post.addPostSuccess,
         showLoading: state.post.showLoading,
-        singlePostData: state.post.selectedPostData
+        singlePostData: state.post.selectedPostData,
+        totalPostsCount: state.post.totalPostsCount
     }
 }
 
@@ -103,7 +120,9 @@ const mapDispatchToProps = (dispatch) => {
     return {
         getPostDetails: (postID) => {
             return dispatch(getPostDetailsByPost(postID))
-        }
+        }, getPagePost: ({ selected: selectedPage}) => {
+            dispatch(fetchPosts(selectedPage));
+        },
     };
 }
 

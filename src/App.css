@@ -36,3 +36,25 @@
     transform: rotate(360deg);
   }
 }
+.previousClassName{
+
+}
+.paginationContainer{text-decoration: none;list-style-type:none; cursor:pointer; text-align: center;}
+.paginationContainer .selected {
+  font-weight: bold;
+  
+}
+.paginationContainer li,a {float: left; text-decoration: none; border:1px solid black;width:90px;}
+
+.paginationContainer li:first-of-type{
+  border-radius: 5px;
+}
+.paginationContainer li:last-of-type{
+  border-radius: 5px;
+}
+.paginationContainer .previous {
+  margin-right:10px;
+}
+.paginationContainer .next {
+  margin-left:10px;
+}

@@ -9,10 +9,12 @@ let initialState = {
   totalPostsCount: 0,
   addPostSuccess: false,
   selectedPostData: {},
-  lastDeletedPost: {}
+  lastDeletedPost: {},
+  currentPage: 1
 }
 
 const postReducer = (state = initialState, action) => {
+  console.log("Action--->", action);
   switch (action.type) {
 
     case actionTypes.SHOW_LOADING:
@@ -22,11 +24,10 @@ const postReducer = (state = initialState, action) => {
       }
 
     case actionTypes.VIEW_ALL:
-      const allPosts = action.payload;
       return {
         ...state,
-        posts: allPosts,
-        totalPostsCount: action.totalPostsCount
+        posts: action.payload.posts,
+        totalPostsCount: action.payload.totalPostCount
       }
 
     case actionTypes.SHOW_ERROR:
@@ -59,6 +60,15 @@ const postReducer = (state = initialState, action) => {
         ...state,
         posts: newPosts,
         lastDeletedPost: lastPost
+      }
+
+    case actionTypes.CREATE_POST:      
+    console.log("Create dispatch-->", action.payload);
+      return {
+        ...state,
+        posts: action.payload.data.allPosts,
+        totalPostsCount: action.payload.data.totalPost,
+        addPostSuccess: false 
       }
     default:
   }
