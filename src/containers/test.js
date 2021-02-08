@@ -3,13 +3,20 @@ import List from './List'
 const TestComponent = () => {
 
 
-
+    // Use state with use ref hook example
     let [changeStae, setChangeState] = useState('');
-    const prevCount = usePrevious(changeStae)
-    //const ref = useRef();
-    useEffect(() => {
-        //setChangeState("Component did mount");
-    });
+    const prevCount = usePrevious(changeStae);
+
+    function usePrevious(value) {
+        const ref = useRef();
+        console.log('Ref data==>', ref);
+        useEffect(() => {
+            
+            ref.current = value;
+        });
+        return ref.current;
+    }
+
 
     const [listNumber, setListNumber] = useState(0);
 
@@ -114,19 +121,15 @@ const TestComponent = () => {
         // setChangeState("componentWillUnmount");
         return;
     });
-    function usePrevious(value) {
-        const ref = useRef();
-        useEffect(() => {
-            ref.current = value;
-        });
-        return ref.current;
-    }
+    
 
     function handleChangeEvent(event) {
-        console.log(event.target.value)
+        console.log(event.target.value);
         setChangeState(event.target.value);
     }
 
+
+    //Fibonaceae series
     function fibonaceae() {
         var number = 10;
         var n1 = 0;
@@ -140,7 +143,14 @@ const TestComponent = () => {
         }
     }
 
+    var ref = React.createRef();
 
+    useEffect(function(){
+        console.log(ref);
+        if(ref !=undefined) {
+            console.log("Ref value==>",ref.value);
+        }
+    },[]);
 
     return (
 
@@ -154,6 +164,11 @@ const TestComponent = () => {
             <div>fibonaceae: {fibonaceae()}</div>
             <div>useCallback Type Number: <input type="text" onChange={(event)=>setListNumber(parseInt(event.target.value))}/></div>
             <div><List printData={listData} /></div>
+
+            <div>
+                Use Ref example
+            <input type="text" ref={ref}/>
+            </div>
         </div>
     )
 }
