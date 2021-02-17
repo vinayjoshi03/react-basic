@@ -1,5 +1,5 @@
 import React,{Component} from 'react'
-
+import {withRouter} from 'react-router'
 import {Row, Col} from 'react-bootstrap';
 import UserGrid from './UserDetails/UserGrid'
 class User extends Component {
@@ -14,4 +14,4 @@ class User extends Component {
         )
     }
 }
-export default User
+export default withRouter(User)

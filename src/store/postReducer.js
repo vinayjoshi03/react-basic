@@ -14,7 +14,6 @@ let initialState = {
 }
 
 const postReducer = (state = initialState, action) => {
-  console.log("Action--->", action);
   switch (action.type) {
 
     case actionTypes.SHOW_LOADING:
@@ -59,16 +58,16 @@ const postReducer = (state = initialState, action) => {
       return {
         ...state,
         posts: newPosts,
-        lastDeletedPost: lastPost
+        lastDeletedPost: lastPost,
+        totalPostsCount: action.payload.data.totalPostsCount
       }
 
-    case actionTypes.CREATE_POST:      
-    console.log("Create dispatch-->", action.payload);
+    case actionTypes.CREATE_POST:
       return {
         ...state,
         posts: action.payload.data.allPosts,
         totalPostsCount: action.payload.data.totalPost,
-        addPostSuccess: false 
+        addPostSuccess: false
       }
     default:
   }

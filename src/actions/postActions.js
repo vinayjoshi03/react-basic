@@ -28,6 +28,24 @@ export const fetchPosts = (pageNo=0) => {
     }
 }
 
+export const getAllPosts = async (pageNo=0) => {
+        return await Axios.post('http://localhost:1337/api/posts/getall', {pageNumber:pageNo}).then(response => {
+            
+            if (response.status === 200) {
+                //console.log("API Response: ", response.data, response.status);
+                return response.data;
+                
+            } else {
+                
+                return {error: "Error occure during fetching posts"}
+            }
+        }).catch(function (err) {
+            //console.log("API Error: ", err);
+            return {error: err}
+        });
+    
+}
+
 export const addNewPost = (data, additionalData={pageNumber:0}) => {
     return (dispatch) => {
         dispatch(showLoading(true));
@@ -85,4 +103,19 @@ export const deletePost = (post) => {
             dispatch(showLoading(false));
         });
     }
+}
+
+export const deleteSinglePost = async (post) => {
+        return await Axios.delete('http://localhost:1337/api/posts/delete', { data: post }).then(response => {
+
+            if (response.status === 200) {
+                return response;
+                //dispatch({ type: actionTypes.DELETE_POST, payload: { data: response.data.data } });
+            } else {
+                return {error:'Error occurred during deleting post'}
+            }
+        }).catch(function (err) {
+            return {error:err}
+        });
+   
 }

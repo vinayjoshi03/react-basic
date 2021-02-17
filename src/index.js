@@ -14,11 +14,11 @@ import thunk from 'redux-thunk';
 const rootReducer = combineReducers({post:postReducer,user:userReducer});
 const store = createStore(rootReducer, applyMiddleware(thunk));
 ReactDOM.render(
-  <React.StrictMode>
+  //<React.StrictMode>
     <Provider store={store}>
     <App />
-    </Provider>
-  </React.StrictMode>,
+    </Provider>,
+  //</React.StrictMode>,
   document.getElementById('root')
 );
 

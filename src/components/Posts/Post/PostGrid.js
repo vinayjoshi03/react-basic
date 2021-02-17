@@ -11,20 +11,21 @@ import { connect } from 'react-redux'
 class PostGrid extends Component {
 
     constructor(props) {
-    super(props);
-    this.state = {
+        super(props);
+        this.state = {
 
-        loadedPost: null,
-        showModel: false,
-        selectedPostBody: null,
-        postTitle: "Post Details",
-        selectedDeletePost: {},
-        allPosts: {},
-        postHtml: null,
-        totalPostsCount: 0,
-        currentPage: 0
-    };
-    }   
+            loadedPost: null,
+            showModel: false,
+            selectedPostBody: null,
+            postTitle: "Post Details",
+            selectedDeletePost: {},
+            allPosts: {},
+            postHtml: null,
+            totalPostsCount: 0,
+            currentPage: 0
+        };
+        
+    }
 
 
 
@@ -59,10 +60,12 @@ class PostGrid extends Component {
     }
 
     
-
     render() {
+        const handlePageChange = ({selected:selectedPage}) => {
+            console.log(selected);
+        }
         let totalPages = Math.ceil(this.props.totalPostsCount / 5);
-        let PostDataList = this.props.allPosts.map((post, key) => {
+        let PostDataListGrid = this.props.allPosts.map((post, key) => {
 
             return (
                 <tr key={post.id + "id"}>
@@ -85,18 +88,20 @@ class PostGrid extends Component {
         return (
             <div>
                 <div onClick={() => this.createNewPost()}>Create New Post</div>
-                <Table striped bordered hover>
-                    <thead>
-                        <tr>
-                            <th>First Name</th>
-                            <th>Username</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {PostDataList}
-                    </tbody>
-                </Table>
+                <div> 
+                    <Table striped bordered hover>
+                        <thead>
+                            <tr>
+                                <th>First Name</th>
+                                <th>Username</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {PostDataListGrid}
+                        </tbody>
+                    </Table>
+                </div>
 
                 <ReactPaginate onPageChange={this.props.getPagePost} containerClassName="paginationContainer" pageCount={totalPages} pageRangeDisplayed={2} marginPagesDisplayed="2"></ReactPaginate>
                 <ModelComponent title={this.state.postTitle} modelBody={this.state.selectedPostBody} handleClose={this.handleModelClose.bind(this)} show={this.state.showModel} />

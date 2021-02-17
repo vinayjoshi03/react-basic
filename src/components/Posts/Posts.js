@@ -11,17 +11,18 @@ class Posts extends Component {
         this.state = {
             loadedPost: null,
             posts: [],
-            isLoaded: false,
             postTitle: '',
             modelBody: '',
             showModel: false,
             disableSubmit: true,
             errorMessage: {},
-            allPosts: this.props.postData
+            allPosts: this.props.postData,
+            isLoading: true
         }
     }
-    handleViewPost(postid) {
 
+    
+    handleViewPost(postid) {
         this.setState({ selectedPost: postid, showModel: true });
     }
     handleModelClose() {
@@ -34,27 +35,41 @@ class Posts extends Component {
         this.props.getAllPosts();
         this.setState({ allPosts: this.props.postData });
     }
-
     componentDidMount() {
         this.props.getAllPosts();
-        this.setState({ allPosts: this.props.postData })
+        const { postData } = this.props;
+        if(this.props.showLoading === false) {
+            this.setState({ isLoading:false });
+        }
+        this.setState({ allPosts: postData, isLoading:false });
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        console.log("Show loading--->", this.props.showLoading);
+        if(this.props.showLoading === false && prevState.isLoading) {
+            this.setState({isLoading: false});
+        }
     }
 
     
     //data = this.setPosts();
     render() {
-        //this.props.getAllPosts();
-        //this.setState({allPosts:this.props.postData});
+        console.log(this.state);
+        
+        let isloading = this.state.isLoading;
+        console.log("isloading===>", isloading);
         let loadingData = (props) => {
+            
             if (props.currentPage === 'post-list') {
                 return (
+                    
                     <PostGrid
                         selectedPost={this.state.selectedPost}
                         handleDeletePost={this.handleDeletePost}
                         allPosts={this.props.postData}
                     />
                 )
-            }
+            } 
             if (props.currentPage === 'addpost') {
                 return (
                     <div>
@@ -72,7 +87,8 @@ class Posts extends Component {
             <Row>
                 <Col>
                     <h1>Posts</h1>
-                    <div>{loadingData(this.props)}</div>
+
+                    {isloading? <div>Loading....</div> : <div>{loadingData(this.props)}</div> }
                 </Col>
                 <ModelComponent title={this.state.postTitle} modelBody={this.state.modelBody} handleClose={this.handleModelClose.bind(this)} show={this.state.showModel} />
             </Row>
@@ -85,6 +101,7 @@ const mapStateToProps = (state) => {
     return {
         postsCount: state.post.counter,
         postData: state.post.posts,
+        showLoading: state.post.showLoading
     }
 }
 
