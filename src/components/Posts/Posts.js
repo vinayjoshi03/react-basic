@@ -45,7 +45,6 @@ class Posts extends Component {
     }
 
     componentDidUpdate(prevProps, prevState) {
-        console.log("Show loading--->", this.props.showLoading);
         if(this.props.showLoading === false && prevState.isLoading) {
             this.setState({isLoading: false});
         }
@@ -54,10 +53,8 @@ class Posts extends Component {
     
     //data = this.setPosts();
     render() {
-        console.log(this.state);
         
         let isloading = this.state.isLoading;
-        console.log("isloading===>", isloading);
         let loadingData = (props) => {
             
             if (props.currentPage === 'post-list') {

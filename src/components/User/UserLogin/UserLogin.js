@@ -6,9 +6,13 @@ import { api } from './../../../util/api'
 import Cookies from 'js-cookie';
 import {withRouter} from 'react-router'
 import {browserHistory} from "react-router";
-import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom'
+import { BrowserRouter as Router, Switch, Route, Redirect, useLocation } from 'react-router-dom'
 
 const login = () => {
+    const useQuery= () => {
+        return new URLSearchParams(useLocation().search);
+    }
+    let query = useQuery();
     const [loginDetails, setLoginDetails] = useState({});
     const [errorMessages, setErrorMessages] = useState({});
     const [usernameError, setUsernameError] = useState("");
@@ -17,7 +21,6 @@ const login = () => {
     const handleChange = (event) => {
         const data = loginDetails;
         data[event.target.name] = event.target.value;
-        console.log(data);
         setLoginDetails(data);
         //this.setState({ inputData: data });
     }
@@ -32,17 +35,19 @@ const login = () => {
             }
         }
 
-        if(Cookies.get('vj-authtoken')) {
-            setLoginStatus(true)
-        } else {
-            setLoginStatus(false) 
-        }
-    }, [usernameError, passwordError, errorMessages, isLoggedin]);
+       
+    }, [usernameError, passwordError, errorMessages]);
     useEffect(()=>{
         if(Cookies.get('vj-authtoken')) {
             setLoginStatus(true)
         } else {
             setLoginStatus(false) 
+        }
+
+        if(query.get('logout')) {
+            setLoginStatus(false);
+            Cookies.remove('vj-authtoken');
+            window.location = "/login";
         }
     },[])
     const handleSubmit = async (event) => {
@@ -53,7 +58,7 @@ const login = () => {
             const userDetails = api.post('http://localhost:1337/api/user/login', loginDetails).then(function (result) {
                 Cookies.set('vj-authtoken', result.data.userDetails.token);
                 setLoginStatus(true);
-                browserHistory.push("/users");
+                ///browserHistory.push("/users");
                 window.location = "/users";
             }).catch(function (error) {
                 return <Redirect to='/login' />;
@@ -61,6 +66,7 @@ const login = () => {
         }
         setErrorMessages(response);
     }
+    
     return !isLoggedin? (
         <div>
             <form onSubmit={(event) => { handleSubmit(event) }}>

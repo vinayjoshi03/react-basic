@@ -49,7 +49,6 @@ class PostGrid extends Component {
     }
 
     componentDidMount() {
-        //console.log("componentDidMount props--->", props);
         //this.setState({totalPostCount: this.props.totalPostCount});
     }
     handleDelete(postid) {
@@ -62,7 +61,6 @@ class PostGrid extends Component {
     
     render() {
         const handlePageChange = ({selected:selectedPage}) => {
-            console.log(selected);
         }
         let totalPages = Math.ceil(this.props.totalPostsCount / 5);
         let PostDataListGrid = this.props.allPosts.map((post, key) => {

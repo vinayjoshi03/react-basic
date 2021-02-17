@@ -25,7 +25,7 @@ const App = () => {
     } else {
       setLogin(false);
     }
-    console.log(isLoggedin, Cookies.get("vj-authtoken"));
+    
   }, [isLoggedin]);
   return (
     <Container border="primary">
@@ -43,6 +43,9 @@ const App = () => {
               <ErrorBoundry>{!isLoggedin ? <Redirect to="/login" /> : <User />}</ErrorBoundry>
             </Route>
             <Route path="/login">
+              <ErrorBoundry><UserLogin /></ErrorBoundry>
+            </Route>
+            <Route path="/login:logout">
               <ErrorBoundry><UserLogin /></ErrorBoundry>
             </Route>
             <Route path="/hooks">

@@ -10,7 +10,7 @@ class Header extends Component {
     render() {
         let showLogin = '';
         if (Cookies.get("vj-authtoken") != undefined) {
-            showLogin = <Nav.Link as={Link} to="/logout">Logout</Nav.Link>;
+            showLogin = <Nav.Link as={Link} to="/login?logout=true">Logout</Nav.Link>;
         } else {
             showLogin = <Nav.Link as={Link} to="/login">Login</Nav.Link>;
         }

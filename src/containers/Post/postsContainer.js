@@ -2,8 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { getAllPosts, getPostDetailsByPost, deleteSinglePost } from './../../actions/postActions'
 import * as actionTypes from './../../actions/types';
 import postReducer from './../../store/postReducer'
-import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { Table, Button } from 'react-bootstrap';
 import ReactPaginate from 'react-paginate';
 

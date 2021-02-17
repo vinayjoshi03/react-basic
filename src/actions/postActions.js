@@ -32,7 +32,6 @@ export const getAllPosts = async (pageNo=0) => {
         return await Axios.post('http://localhost:1337/api/posts/getall', {pageNumber:pageNo}).then(response => {
             
             if (response.status === 200) {
-                //console.log("API Response: ", response.data, response.status);
                 return response.data;
                 
             } else {
@@ -40,7 +39,6 @@ export const getAllPosts = async (pageNo=0) => {
                 return {error: "Error occure during fetching posts"}
             }
         }).catch(function (err) {
-            //console.log("API Error: ", err);
             return {error: err}
         });
     
@@ -51,7 +49,6 @@ export const addNewPost = (data, additionalData={pageNumber:0}) => {
         dispatch(showLoading(true));
         return Axios.post('http://localhost:1337/api/posts/create', {postData:data,additionalData:additionalData}).then(response => {
             if (response.status === 200) {
-                console.log("After Create-->",response);
                 dispatch({ type: actionTypes.SHOW_ADD_SUCCESS, payload: { status: true } });
                 dispatch({ type: actionTypes.CREATE_POST, payload: { data: response.data.data } });
                 dispatch(showLoading(false));
