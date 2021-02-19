@@ -4,12 +4,12 @@ import { validateLoginForm } from '../../../util/validations'
 import { useDispatch, useSelector } from 'react-redux'
 import { api } from './../../../util/api'
 import Cookies from 'js-cookie';
-import {withRouter} from 'react-router'
-import {browserHistory} from "react-router";
+import { withRouter } from 'react-router'
+import { browserHistory } from "react-router";
 import { BrowserRouter as Router, Switch, Route, Redirect, useLocation } from 'react-router-dom'
-
+import RegisterUser from './../UserDetails/userRegistrationComponent'
 const login = () => {
-    const useQuery= () => {
+    const useQuery = () => {
         return new URLSearchParams(useLocation().search);
     }
     let query = useQuery();
@@ -35,21 +35,21 @@ const login = () => {
             }
         }
 
-       
+
     }, [usernameError, passwordError, errorMessages]);
-    useEffect(()=>{
-        if(Cookies.get('vj-authtoken')) {
+    useEffect(() => {
+        if (Cookies.get('vj-authtoken')) {
             setLoginStatus(true)
         } else {
-            setLoginStatus(false) 
+            setLoginStatus(false)
         }
 
-        if(query.get('logout')) {
+        if (query.get('logout')) {
             setLoginStatus(false);
             Cookies.remove('vj-authtoken');
             window.location = "/login";
         }
-    },[])
+    }, [])
     const handleSubmit = async (event) => {
         event.preventDefault();
         let response = {};
@@ -57,6 +57,7 @@ const login = () => {
         if (response === true) {
             const userDetails = api.post('http://localhost:1337/api/user/login', loginDetails).then(function (result) {
                 Cookies.set('vj-authtoken', result.data.userDetails.token);
+                Cookies.set('vj-authtoken-last-login', result.data.userDetails.token);
                 setLoginStatus(true);
                 ///browserHistory.push("/users");
                 window.location = "/users";
@@ -66,16 +67,22 @@ const login = () => {
         }
         setErrorMessages(response);
     }
-    
-    return !isLoggedin? (
-        <div>
-            <form onSubmit={(event) => { handleSubmit(event) }}>
-                Username: <input type="text" name="username" onChange={(event) => { handleChange(event) }} /> {usernameError}
+
+    return !isLoggedin ? (
+        <>
+            <div>
+                <form onSubmit={(event) => { handleSubmit(event) }}>
+                    Username: <input type="text" name="username" onChange={(event) => { handleChange(event) }} /> {usernameError}
                     Password: <input type="password" name="password" onChange={(event) => { handleChange(event) }} /> {passwordError}
-                <input type="submit" value="Login" />
-            </form>
-        </div>
-    ) :(<Redirect to='/users' />)
+                    <input type="submit" value="Login" />
+                </form>
+            </div>
+            <div>
+                <h1>Register User</h1>
+                <RegisterUser />
+            </div>
+        </>
+    ) : (<Redirect to='/users' />)
 
 }
 

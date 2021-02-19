@@ -12,24 +12,23 @@ const posts = () => {
     const [allPosts, setAllPosts] = useState([]);
     //const dispatch = useDispatch();
     const initialState = useSelector(state => state);
-    const [isLoading, setLoading] = useState(true);
+    const [isLoading, setLoading] = useState(initialState.common.showLoading);
     const [totalPages, setTotalPages] = useState();
-
+    const showLoading = initialState.common.showLoading;
     const dispatch = useDispatch();
     useEffect(() => {
-
+        dispatch({ type: actionTypes.SHOW_LOADING, payload: { showLoading: true } });
         const response = getAllPosts().then(function (result) {
             initialState.post.posts = result.data;
-            dispatch({ type: "VIEW_ALL", payload: { posts: result.data, totalPostCount: result.totalPostCount } });
+            dispatch({ type: actionTypes.VIEW_ALL, payload: { posts: result.data, totalPostCount: result.totalPostCount } });
+            dispatch({ type: actionTypes.SHOW_LOADING, payload: { showLoading: false } });
             setTotalPages(Math.ceil(result.totalPostCount / 10));
             setAllPosts(result.data);
-            setLoading(false);
         });
     }, []);
 
     useEffect(() => {
-        setAllPosts(initialState.post.posts);
-        //setTotalPages(Math.ceil(initialState.post.posts.totalPostCount / 10));
+        setAllPosts(initialState.post.posts);        
     }, [allPosts]);
 
 
@@ -98,7 +97,7 @@ const posts = () => {
         <div>
             <div>
                 Posts
-                {isLoading ? (<div>Loading....</div>) : showPosts()}
+                {!showLoading? showPosts():""}
                 <ReactPaginate onPageChange={(e) => { handlePageClick(e) }} containerClassName="paginationContainer" pageCount={totalPages}></ReactPaginate>
             </div>
         </div>

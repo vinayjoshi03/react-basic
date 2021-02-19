@@ -1,14 +1,21 @@
 import React, { Component, useState, useEffect } from 'react'
 import { Table } from 'react-bootstrap';
 import Axios from 'axios';
+import * as actionTypes from './../../../actions/types'
+import {useSelector, useDispatch} from 'react-redux'
 //import * as bs from 'bootstrap/dist/css/bootstrap.css';
 //import * as bst from 'bootstrap/dist/css/bootstrap-theme.css';
 const UserGrid = () => {
     let userData;
+    const initialState = useSelector((state)=>state);
+    const dispatch = useDispatch();
     const [userDetails, setUserDetails] = useState({});
+    const showLoading = initialState.common.showLoading
     useEffect(() => {
+        dispatch({ type: actionTypes.SHOW_LOADING, payload: { showLoading: true } });
        Axios.get('https://jsonplaceholder.typicode.com/users').then(response => {
             setUserDetails(response.data);
+            dispatch({ type: actionTypes.SHOW_LOADING, payload: { showLoading: false } });
         });
     }, []);
 
@@ -44,7 +51,7 @@ const UserGrid = () => {
     return (
         <>
             User details
-          {UserData()}
+          {!showLoading? UserData(): ""}
         </>
     )
 }

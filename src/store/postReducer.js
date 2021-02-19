@@ -15,13 +15,6 @@ let initialState = {
 
 const postReducer = (state = initialState, action) => {
   switch (action.type) {
-
-    case actionTypes.SHOW_LOADING:
-      return {
-        ...state,
-        showLoading: action.payload.showLoading
-      }
-
     case actionTypes.VIEW_ALL:
       return {
         ...state,

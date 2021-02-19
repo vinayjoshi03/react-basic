@@ -9,10 +9,12 @@ import userReducer from './store/reducer'
 import {Provider} from 'react-redux'
 import thunk from 'redux-thunk';
 //import 'bootstrap/dist/css/bootstrap.min.css';
+import logger from 'redux-logger'
+import commonReducer from './store/commonReducer'
 
 
-const rootReducer = combineReducers({post:postReducer,user:userReducer});
-const store = createStore(rootReducer, applyMiddleware(thunk));
+const rootReducer = combineReducers({common: commonReducer, post:postReducer,user:userReducer });
+const store = createStore(rootReducer, applyMiddleware(thunk, logger));
 ReactDOM.render(
   //<React.StrictMode>
     <Provider store={store}>
