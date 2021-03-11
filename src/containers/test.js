@@ -90,7 +90,7 @@ const TestComponent = () => {
 
 
     function sortArray() {
-        var input = [2, 3, 8, 1, 4, 5, 9, 7, 6];
+        var input = [2, 3, 8, 1, 20, 5, 9, 60, 6];
 
         var output = [];
         var inserted;
@@ -108,7 +108,6 @@ const TestComponent = () => {
                 output.push(input[i])
         }
         return output;
-
     }
 
     useEffect(() => {
@@ -145,13 +144,45 @@ const TestComponent = () => {
 
     var ref = React.createRef();
 
-    useEffect(function(){
+    useEffect(function() {
         console.log(ref);
         if(ref !=undefined) {
             console.log("Ref value==>",ref.value);
         }
     },[]);
-
+    const [apiData, setApiData] = useState([]);
+  const fetchData = async () => {
+    await fetch("https://jsonplaceholder.typicode.com/todos")
+      .then(data => {
+        return data.json();
+      })
+      .then(apiResp => {
+        setApiData(apiResp);
+      });
+  };
+  useEffect(function() {
+    fetchData();
+  }, []);
+  const printData = () => {
+    const data = apiData.map((item, key) => {
+      const randomno = Math.random();
+      return (
+        <tr id={key+randomno}>
+          <td style={{border: "1px solid red"}} >{item.id}</td>
+          <td style={{border: "1px solid red"}} >{item.title}</td>
+        </tr>
+      );
+    });
+    return <table>
+    <thead>
+      <th>Userid</th>
+      <th>Title</th>
+    </thead>
+    <tbody>
+    {data}
+    </tbody>
+    </table>;
+  };
     return (
 
         <div>
@@ -168,6 +199,10 @@ const TestComponent = () => {
             <div>
                 Use Ref example
             <input type="text" ref={ref}/>
+            </div>
+            <div>
+                Fetch function 
+                {printData()}
             </div>
         </div>
     )
