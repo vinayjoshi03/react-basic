@@ -12,6 +12,7 @@ import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import Cookies from 'js-cookie';
 import Auxiliary from './components/hoc/auxiliary'
 import {useSelector, useDispatch} from 'react-redux'
+import UseCallbackHooComponent from './containers/UseCallbackComponent'
 const App = () => {
 
   const [isLoggedin, setLogin] = useState(true);
@@ -59,6 +60,10 @@ const App = () => {
           <Route path="/testcode">
             <ErrorBoundry>{!isLoggedin ? <Redirect to="/login" /> : <TestComponent />} </ErrorBoundry>
           </Route>
+          <Route path="/useCallback">
+            <ErrorBoundry><UseCallbackHooComponent /></ErrorBoundry>
+          </Route>
+
         </Switch>
       </Router>
     </Auxiliary>

@@ -24,6 +24,7 @@ class Header extends Component {
                 return (
                     <>
                         <Nav.Link as={Link} to="/">Home</Nav.Link>
+                        <Nav.Link as={Link} to="/useCallback">Use Callback example</Nav.Link>
                         <Nav.Link as={Link} to="/login">Login</Nav.Link>
                     </>
                 );
