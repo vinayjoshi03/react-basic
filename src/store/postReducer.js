@@ -10,7 +10,8 @@ let initialState = {
   addPostSuccess: false,
   selectedPostData: {},
   lastDeletedPost: {},
-  currentPage: 1
+  currentPage: 1,
+  samplePosts: []
 }
 
 const postReducer = (state = initialState, action) => {
@@ -61,6 +62,11 @@ const postReducer = (state = initialState, action) => {
         posts: action.payload.data.allPosts,
         totalPostsCount: action.payload.data.totalPost,
         addPostSuccess: false
+      }
+    case actionTypes.GET_ALL_SAMPLE_POSTS:
+      return {
+        ...state,
+        samplePosts:action.payload
       }
     default:
   }

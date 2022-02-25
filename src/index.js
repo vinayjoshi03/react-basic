@@ -3,23 +3,23 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-import {createStore, combineReducers, applyMiddleware} from 'redux'
+import { createStore, combineReducers, applyMiddleware } from 'redux'
 import postReducer from './store/postReducer'
 import userReducer from './store/reducer'
-import {Provider} from 'react-redux'
+import { Provider } from 'react-redux'
 import thunk from 'redux-thunk';
 //import 'bootstrap/dist/css/bootstrap.min.css';
 import logger from 'redux-logger'
 import commonReducer from './store/commonReducer'
 
 
-const rootReducer = combineReducers({common: commonReducer, post:postReducer,user:userReducer });
+const rootReducer = combineReducers({ common: commonReducer, post: postReducer, user: userReducer });
 const store = createStore(rootReducer, applyMiddleware(thunk, logger));
 ReactDOM.render(
   //<React.StrictMode>
-    <Provider store={store}>
+  <Provider store={store}>
     <App />
-    </Provider>,
+  </Provider>,
   //</React.StrictMode>,
   document.getElementById('App')
 );
